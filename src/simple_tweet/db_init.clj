@@ -1,4 +1,4 @@
-(ns simple-tweet.db.db-init
+(ns simple-tweet.db-init
   (:require [jdbc.pool.c3p0 :as pool])
   )
 
