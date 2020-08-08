@@ -9,6 +9,7 @@
                  [clojure.jdbc/clojure.jdbc-c3p0 "0.3.2"]
                  [ring "1.8.1"]
                  [ring/ring-defaults "0.3.2"]
+                 [ring-cors "0.1.13"]
                  [compojure "1.6.1"]
                  [http-kit "2.3.0"]
                  [org.clojure/data.json "0.2.7"]]
