@@ -18,7 +18,10 @@
            (POST "/tweets/friend" req (tweets-api/get-all-friends-tweets req))
            (POST "/tweets/insert" req (tweets-api/insert-tweet req))
 
+           (GET "/users" [] user-api/get-all-users)
            (wrap-params (GET "/user" params (user-api/get-user (:query-params params))))
+           (POST "/users" req (user-api/get-users req))
+           (POST "/friends" req (user-api/get-friends req))
 
            (route/not-found "Error, page not found!")
            )

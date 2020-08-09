@@ -26,7 +26,7 @@
       (catch Exception e (response-utils/status (response-utils/response "Error") 400)))))
 
 
-(defn get-all-friends-tweets [req]
+(defn get-all-friends-tweets "Gets all friends tweets and my" [req]
   (let [body (request-utils/body-string req)]
     (let [params (json/read-str body :key-fn keyword)]
       (try
