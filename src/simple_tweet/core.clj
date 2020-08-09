@@ -32,9 +32,10 @@
   (let [port (Integer/parseInt (or (System/getenv "PORT") "9000"))]
     (server/run-server (->
                         (wrap-defaults #'app-routes api-defaults)
-                        (wrap-cors :access-control-allow-origin [#".*"]
-                                   :access-control-allow-headers ["Content-Type" "Authorization"]
-                                  :available-media-types ["multipart/form-data" "application/json"])
+                        (wrap-cors  :access-control-allow-origin [#".*"]
+                                    :access-control-allow-headers ["Content-Type" "Authorization"]
+                                    :access-control-allow-methods [:get :put :post :delete]
+                                    :available-media-types ["multipart/form-data" "application/json"])
                         )
                        {:port port})
     (println (str "Running webserver at http:/127.0.0.1:" port "/"))))
