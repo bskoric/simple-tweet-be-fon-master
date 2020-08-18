@@ -9,6 +9,10 @@
   (db/query pool/my-pool
                      ["SELECT * FROM user WHERE username = ?" username]))
 
+(defn find-user-by-username-password "Gets user by username and passwrd" [username password]
+  (db/query pool/my-pool
+            ["SELECT user_id, first_name, last_name, username, email, image FROM user WHERE username = ? AND password = ?" username password]))
+
 (defn find-users-except-id "Gets all users except with provide id" [user-id]
   (db/query pool/my-pool
             ["SELECT * FROM `user` WHERE not user_id = ?" user-id]))

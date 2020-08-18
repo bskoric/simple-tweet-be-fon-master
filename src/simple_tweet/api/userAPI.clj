@@ -4,9 +4,23 @@
     [clojure.walk :as walk]
     [ring.util.response :as response-utils]
     [ring.util.request :as request-utils]
-    [simple-tweet.service.userService :as user-service]
     [simple-tweet.dao.userDao :as user-dao])
   )
+
+(defn login [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (->
+          (response-utils/response (json/write-str (user-dao/find-user-by-username-password (get params :username "")
+                                                                                            (get params :password "")
+                                                                                            )))
+          (response-utils/header "Content-Type" "application/json")
+          )
+        (catch Exception e
+          (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
+          (println (.toString e)))))))
+
 
 (def get-all-users (->
                      (response-utils/response (json/write-str user-dao/users))
@@ -31,7 +45,7 @@
           (response-utils/header "Content-Type" "application/json")
           )
         (catch Exception e (response-utils/status
-                             (response-utils/response (str "Error, can't find tweets.\n" (.toString e))) 400))))))
+                             (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400))))))
 
 (defn get-friends [req]
   (let [body (request-utils/body-string req)]
@@ -42,4 +56,5 @@
           (response-utils/header "Content-Type" "application/json")
           )
         (catch Exception e
-          (response-utils/status (response-utils/response (str "Error, can't find tweets.\n" (.toString e))) 400))))))
+          (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
+          (println (.toString e)))))))
