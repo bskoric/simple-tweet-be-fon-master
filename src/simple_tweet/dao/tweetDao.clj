@@ -16,6 +16,7 @@
   ORDER by date DESC" user-id user-id])
   )
 
-(defn insert-tweet [title post date user]
-  (db/insert! pool/my-pool "tweet" {:title title :post post :date date :user user})
+(defn insert-tweet [title post user]
+  (db/insert! pool/my-pool "tweet" {:title title :post post :user user})
+  (println "Inserting tweet [" + title + " ]")
   )

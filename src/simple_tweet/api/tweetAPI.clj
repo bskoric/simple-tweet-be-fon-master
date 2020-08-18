@@ -4,7 +4,6 @@
     [ring.util.request :as request-utils]
     [clojure.walk :as walk]
     [ring.util.response :as response-utils]
-    [simple-tweet.service.tweetService :as tweet-service]
     [simple-tweet.dao.tweetDao :as tweet-dao]))
 
 (extend-type java.sql.Timestamp
@@ -13,7 +12,7 @@
     (json/-write (str date) out)))
 
 (def get-all-tweets (->
-                      (response-utils/response (json/write-str (tweet-service/get-tweets)))
+                      (response-utils/response (json/write-str tweet-dao/find-tweets))
                       (response-utils/header "Content-Type" "application/json")
                       )
   )
@@ -22,7 +21,7 @@
 (defn get-all-tweets-by-user "Gets all tweets by user" [params]
   (let [inputs (walk/keywordize-keys params)]
     (try
-      (response-utils/response (json/write-str (tweet-service/get-tweets-by-user (get inputs :user ""))))
+      (response-utils/response (json/write-str (tweet-dao/find-tweets-by-user (get inputs :user ""))))
       (catch Exception e (response-utils/status (response-utils/response "Error") 400)))))
 
 
@@ -39,13 +38,10 @@
 
 (defn insert-tweet [req]
   (let [body (request-utils/body-string req)]
-    (json/read-str body :key-fn keyword)
-    (try
-      (response-utils/response (json/write-str (tweet-service/insert-tweet (get body :title "")
-                                                                           (get body :post "")
-                                                                           (get body :date "")
-                                                                           (get body :user ""))))
-      (catch Exception e (response-utils/status (response-utils/response "Error, can't insert tweet. Try again.") 400)))))
-
-; Simple Body Page
-(defn simple-body-page [req] (response-utils/response (json/write-str (tweet-service/get-tweets))))
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (response-utils/response (json/write-str (tweet-dao/insert-tweet (get params :title "")
+                                                                         (get params :post "")
+                                                                         (get params :user ""))))
+        (catch Exception e (response-utils/status (response-utils/response "Error, can't insert tweet. Try again.") 400)
+                           (println (.toString e)))))))

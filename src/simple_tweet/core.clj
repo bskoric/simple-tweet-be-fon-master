@@ -11,7 +11,6 @@
 
 
 (defroutes app-routes
-           (GET "/" [] tweets-api/simple-body-page)
 
            (GET "/tweets" [] tweets-api/get-all-tweets)
            (wrap-params (GET "/tweets/user" params (tweets-api/get-all-tweets-by-user (:query-params params))))
