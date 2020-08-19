@@ -25,3 +25,8 @@
 (defn find-password "Find encrypt password for username" [username]
   (:password (first (db/query pool/my-pool
                           ["SELECT password FROM user WHERE username = ?" username] ))))
+
+(defn insert-user [firstname lastname username password email]
+  (db/insert! pool/my-pool "user" {:first_name firstname :last_name lastname :username username :password password :email email})
+  (println (format "Inserting user %s %s %s" firstname lastname username))
+  )

@@ -18,6 +18,7 @@
            (POST "/tweets/insert" req (tweets-api/insert-tweet req))
 
            (POST "/login" req (user-api/login req))
+           (POST "/register" req (user-api/register req))
 
            (GET "/users" [] user-api/get-all-users)
            (wrap-params (GET "/user" params (user-api/get-user (:query-params params))))

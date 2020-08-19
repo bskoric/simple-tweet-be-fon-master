@@ -22,6 +22,23 @@
           (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
           (println (.toString e)))))))
 
+(defn register [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (->
+          (response-utils/response (json/write-str (user-service/register-user (get params :firstname "")
+                                                                               (get params :lastname "")
+                                                                               (get params :username "")
+                                                                               (get params :password "")
+                                                                               (get params :email "")
+                                                                               )))
+          (response-utils/header "Content-Type" "application/json")
+          )
+        (catch Exception e
+          (response-utils/not-found (str "Error, can't register user" (.toString e)))
+          (println (.toString e)
+                   ))))))
 
 (def get-all-users (->
                      (response-utils/response (json/write-str user-dao/users))

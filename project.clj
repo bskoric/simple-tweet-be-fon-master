@@ -13,5 +13,6 @@
                  [compojure "1.6.1"]
                  [http-kit "2.3.0"]
                  [org.clojure/data.json "0.2.7"]
-                 [crypto-password "0.2.1"]]
+                 [crypto-password "0.2.1"]
+                 [com.taoensso/timbre "4.10.0"]]
   :repl-options {:init-ns simple-tweet.core})
