@@ -21,3 +21,7 @@
   (db/query pool/my-pool
             ["SELECT friend_id, date, first_name, last_name, username, email
             FROM friendship f join user u on f.friend_id = u.user_id WHERE f.user_id = ?" user-id]))
+
+(defn find-password "Find encrypt password for username" [username]
+  (:password (first (db/query pool/my-pool
+                          ["SELECT password FROM user WHERE username = ?" username] ))))

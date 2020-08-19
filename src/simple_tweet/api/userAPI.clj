@@ -4,7 +4,8 @@
     [clojure.walk :as walk]
     [ring.util.response :as response-utils]
     [ring.util.request :as request-utils]
-    [simple-tweet.dao.userDao :as user-dao])
+    [simple-tweet.dao.userDao :as user-dao]
+    [simple-tweet.service.userService :as user-service])
   )
 
 (defn login [req]
@@ -12,9 +13,9 @@
     (let [params (json/read-str body :key-fn keyword)]
       (try
         (->
-          (response-utils/response (json/write-str (user-dao/find-user-by-username-password (get params :username "")
-                                                                                            (get params :password "")
-                                                                                            )))
+          (response-utils/response (json/write-str (user-service/check-username-and-password (get params :username "")
+                                                                                             (get params :password "")
+                                                                                             )))
           (response-utils/header "Content-Type" "application/json")
           )
         (catch Exception e

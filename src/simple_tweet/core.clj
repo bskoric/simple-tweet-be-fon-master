@@ -6,8 +6,7 @@
             [ring.middleware.params :refer :all]
             [ring.middleware.cors :refer :all]
             [simple-tweet.api.tweetAPI :as tweets-api]
-            [simple-tweet.api.userAPI :as user-api]
-            [cemerick.friend :as friend])
+            [simple-tweet.api.userAPI :as user-api])
   (:gen-class))
 
 

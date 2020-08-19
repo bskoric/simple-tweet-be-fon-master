@@ -13,5 +13,5 @@
                  [compojure "1.6.1"]
                  [http-kit "2.3.0"]
                  [org.clojure/data.json "0.2.7"]
-                 [com.cemerick/friend "0.2.3"]]
+                 [crypto-password "0.2.1"]]
   :repl-options {:init-ns simple-tweet.core})
