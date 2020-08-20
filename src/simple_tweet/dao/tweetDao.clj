@@ -5,9 +5,9 @@
 (def find-tweets (db/query pool/my-pool
                       ["select * from tweet t join user u on t.user = u.user_id"]))
 
-(defn find-tweets-by-user "Gets user by username" [user-id]
+(defn find-tweets-by-user "Gets user by username" [username]
   (db/query pool/my-pool
-            ["SELECT * FROM tweet WHERE user = ?" user-id]))
+            ["select * from tweet t join user u on t.user = u.user_id WHERE username = ?" username]))
 
 (defn find-friends-tweets "Find all friends tweets and my" [user-id]
   (db/query pool/my-pool ["SELECT tweet_id, title, post, date, u.user_id, first_name, last_name, email
