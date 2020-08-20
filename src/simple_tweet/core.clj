@@ -16,6 +16,8 @@
            (wrap-params (GET "/tweets/user" params (tweets-api/get-all-tweets-by-user (:query-params params))))
            (POST "/tweets/friend" req (tweets-api/get-all-friends-tweets req))
            (POST "/tweets/insert" req (tweets-api/insert-tweet req))
+           (PUT "/tweets/update" req (tweets-api/update-tweet req))
+           (DELETE "/tweets/delete" req (tweets-api/delete-tweet req))
 
            (POST "/login" req (user-api/login req))
            (POST "/register" req (user-api/register req))

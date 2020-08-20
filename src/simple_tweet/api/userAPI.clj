@@ -5,7 +5,8 @@
     [ring.util.response :as response-utils]
     [ring.util.request :as request-utils]
     [simple-tweet.dao.userDao :as user-dao]
-    [simple-tweet.service.userService :as user-service])
+    [simple-tweet.service.userService :as user-service]
+    [taoensso.timbre :as log :refer :all])
   )
 
 (defn login [req]
@@ -20,7 +21,7 @@
           )
         (catch Exception e
           (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
-          (println (.toString e)))))))
+          (log/error (.toString e) ))))))
 
 (defn register [req]
   (let [body (request-utils/body-string req)]
@@ -36,9 +37,10 @@
           (response-utils/header "Content-Type" "application/json")
           )
         (catch Exception e
-          (response-utils/not-found (str "Error, can't register user" (.toString e)))
-          (println (.toString e)
-                   ))))))
+          (response-utils/status (response-utils/response (str (.getMessage e))) 400)
+          (log/error (.toString e) )
+          )
+        ))))
 
 (def get-all-users (->
                      (response-utils/response (json/write-str user-dao/users))
@@ -75,4 +77,5 @@
           )
         (catch Exception e
           (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
-          (println (.toString e)))))))
+          (log/error (.toString e) )
+          )))))

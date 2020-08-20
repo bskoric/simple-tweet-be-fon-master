@@ -45,3 +45,22 @@
                                                                          (get params :user ""))))
         (catch Exception e (response-utils/status (response-utils/response "Error, can't insert tweet. Try again.") 400)
                            (println (.toString e)))))))
+
+(defn update-tweet [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (response-utils/response (json/write-str (tweet-dao/update-tweet (get params :id "")
+                                                                         (get params :title "")
+                                                                         (get params :post ""))))
+        (catch Exception e (response-utils/status (response-utils/response "Error, can't update tweet. Try again.") 400)
+                           (println (.toString e)))))))
+
+(defn delete-tweet [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (response-utils/response (json/write-str (tweet-dao/delete-tweet (get params :tweet_id ""))))
+        (catch Exception e (response-utils/status
+                             (response-utils/response "Error, can't update tweet. Try again.") 400)
+                           (println (.toString e)))))))
