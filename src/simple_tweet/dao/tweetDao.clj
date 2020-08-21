@@ -7,6 +7,9 @@
 (def find-tweets (db/query pool/my-pool
                       ["select * from tweet t join user u on t.user = u.user_id"]))
 
+(defn find-tweet-by-id [id] (db/query pool/my-pool
+                           ["select * from tweet t join user u on t.user = u.user_id where tweet_id = ?" id]))
+
 (defn find-tweets-by-user "Gets user by username" [username]
   (db/query pool/my-pool
             ["select * from tweet t join user u on t.user = u.user_id WHERE username = ?" username]))
@@ -33,5 +36,6 @@
 (defn delete-tweet [id]
   (db/delete!
     pool/my-pool "tweet" ["tweet_id=?" id])
+  (log/info "Deleting tweet " id)
   (format "Deleting tweet [%s]" id)
   )

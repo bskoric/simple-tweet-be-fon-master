@@ -17,6 +17,15 @@
                       )
   )
 
+(defn get-tweet-by-id [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (->
+          (response-utils/response (json/write-str (tweet-dao/find-tweet-by-id (get params :tweet_id ""))))
+          (response-utils/header "Content-Type" "application/json")
+          )
+        (catch Exception e (response-utils/status (response-utils/response "Error, can't find tweet. Try again.") 400))))))
 
 (defn get-all-tweets-by-user "Gets all tweets by user" [params]
   (let [inputs (walk/keywordize-keys params)]

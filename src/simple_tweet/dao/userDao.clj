@@ -11,7 +11,7 @@
 
 (defn find-user-by-username-password "Gets user by username and passwrd" [username password]
   (db/query pool/my-pool
-            ["SELECT user_id, first_name, last_name, username, email, image FROM user WHERE username = ? AND password = ?" username password]))
+            ["SELECT user_id, first_name, last_name, username, email FROM user WHERE username = ? AND password = ?" username password]))
 
 (defn find-users-except-id "Gets all users except with provide id" [user-id]
   (db/query pool/my-pool
@@ -21,6 +21,13 @@
   (db/query pool/my-pool
             ["SELECT friend_id, date, first_name, last_name, username, email
             FROM friendship f join user u on f.friend_id = u.user_id WHERE f.user_id = ?" user-id]))
+
+(defn find-non-friends [user-id]
+  (db/query pool/my-pool
+            ["SELECT user_id, first_name, last_name, username, email
+            FROM user
+            WHERE user_id not in (SELECT friend_id
+            FROM friendship f join user u on f.friend_id = u.user_id WHERE f.user_id = ?) and user_id != ?" user-id user-id]))
 
 (defn find-password "Find encrypt password for username" [username]
   (:password (first (db/query pool/my-pool

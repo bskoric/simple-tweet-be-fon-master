@@ -79,3 +79,16 @@
           (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
           (log/error (.toString e) )
           )))))
+
+(defn get-non-friends [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (->
+          (response-utils/response (json/write-str (user-dao/find-non-friends (get params :userID ""))))
+          (response-utils/header "Content-Type" "application/json")
+          )
+        (catch Exception e
+          (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
+          (log/error (.toString e) )
+          )))))

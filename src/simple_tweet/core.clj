@@ -14,6 +14,7 @@
 
            (GET "/tweets" [] tweets-api/get-all-tweets)
            (wrap-params (GET "/tweets/user" params (tweets-api/get-all-tweets-by-user (:query-params params))))
+           (POST "/tweet" req (tweets-api/get-tweet-by-id req))
            (POST "/tweets/friend" req (tweets-api/get-all-friends-tweets req))
            (POST "/tweets/insert" req (tweets-api/insert-tweet req))
            (PUT "/tweets/update" req (tweets-api/update-tweet req))
@@ -25,7 +26,8 @@
            (GET "/users" [] user-api/get-all-users)
            (wrap-params (GET "/user" params (user-api/get-user (:query-params params))))
            (POST "/users" req (user-api/get-users req))
-           (POST "/friends" req (user-api/get-friends req))
+           (POST "/users/friends" req (user-api/get-friends req))
+           (POST "/users/non-friends" req (user-api/get-non-friends req))
 
            (route/not-found "Error, not found!")
            )
