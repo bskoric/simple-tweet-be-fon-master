@@ -15,6 +15,7 @@
            (GET "/tweets" [] tweets-api/get-all-tweets)
            (wrap-params (GET "/tweets/user" params (tweets-api/get-all-tweets-by-user (:query-params params))))
            (POST "/tweet" req (tweets-api/get-tweet-by-id req))
+           (wrap-params (GET "/tweet/likes" params (tweets-api/get-number-of-likes (:query-params params))))
            (POST "/tweets/friend" req (tweets-api/get-all-friends-tweets req))
            (POST "/tweets/insert" req (tweets-api/insert-tweet req))
            (PUT "/tweets/update" req (tweets-api/update-tweet req))
@@ -31,6 +32,10 @@
            (POST "/users/non-friends" req (user-api/get-non-friends req))
            (POST "/users/add-friend" req (user-api/add-friend req))
            (DELETE "/users/remove-friend" req (user-api/remove-friend req))
+
+           (POST "/like" req (tweets-api/add-like req))
+           (POST "/like/check" req (tweets-api/check-like req))
+           (DELETE "/like/remove" req (tweets-api/remove-like req))
 
            (route/not-found "Error, not found!")
            )

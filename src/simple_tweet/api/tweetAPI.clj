@@ -4,7 +4,9 @@
     [ring.util.request :as request-utils]
     [clojure.walk :as walk]
     [ring.util.response :as response-utils]
-    [simple-tweet.dao.tweetDao :as tweet-dao]))
+    [simple-tweet.dao.tweetDao :as tweet-dao]
+    [taoensso.timbre :as log :refer :all]
+    ))
 
 (extend-type java.sql.Timestamp
   json/JSONWriter
@@ -33,6 +35,12 @@
       (response-utils/response (json/write-str (tweet-dao/find-tweets-by-user (get inputs :user ""))))
       (catch Exception e (response-utils/status (response-utils/response "Error") 400)))))
 
+(defn get-number-of-likes "Gets number of likes for tweet" [params]
+  (let [inputs (walk/keywordize-keys params)]
+    (try
+      (response-utils/response (json/write-str (tweet-dao/find-number-of-likes (get inputs :tweet_id ""))))
+      (catch Exception e (response-utils/status (response-utils/response "Error") 400)))))
+
 
 (defn get-all-friends-tweets "Gets all friends tweets and my" [req]
   (let [body (request-utils/body-string req)]
@@ -53,7 +61,7 @@
                                                                          (get params :post "")
                                                                          (get params :user ""))))
         (catch Exception e (response-utils/status (response-utils/response "Error, can't insert tweet. Try again.") 400)
-                           (println (.toString e)))))))
+                           (log/info (.getMessage e)))))))
 
 (defn update-tweet [req]
   (let [body (request-utils/body-string req)]
@@ -63,7 +71,7 @@
                                                                          (get params :title "")
                                                                          (get params :post ""))))
         (catch Exception e (response-utils/status (response-utils/response "Error, can't update tweet. Try again.") 400)
-                           (println (.toString e)))))))
+                           (log/info (.getMessage e)))))))
 
 (defn delete-tweet [req]
   (let [body (request-utils/body-string req)]
@@ -72,4 +80,35 @@
         (response-utils/response (json/write-str (tweet-dao/delete-tweet (get params :tweet_id ""))))
         (catch Exception e (response-utils/status
                              (response-utils/response "Error, can't update tweet. Try again.") 400)
-                           (println (.toString e)))))))
+                           (log/info (.getMessage e)))))))
+
+(defn add-like [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (response-utils/response (json/write-str (tweet-dao/insert-like (get params :tweet_id "")
+                                                                         (get params :user_id "")
+                                                                         )))
+        (catch Exception e (response-utils/status (response-utils/response "Error, can't insert tweet. Try again.") 400)
+                           (log/info (.getMessage e)))))))
+
+
+(defn check-like [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (response-utils/response (json/write-str (tweet-dao/check-like (get params :tweet_id "")
+                                                                        (get params :user_id "")
+                                                                        )))
+        (catch Exception e (response-utils/status (response-utils/response "Error, can't insert tweet. Try again.") 400)
+                           (log/info (.getMessage e)))))))
+
+(defn remove-like [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (response-utils/response (json/write-str (tweet-dao/delete-like (get params :tweet_id "")
+                                                                       (get params :user_id "")
+                                                                       )))
+        (catch Exception e (response-utils/status (response-utils/response "Error, can't insert tweet. Try again.") 400)
+                           (log/info (.getMessage e)))))))
