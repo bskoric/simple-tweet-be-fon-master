@@ -21,7 +21,8 @@
           )
         (catch Exception e
           (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
-          (log/error (.toString e) ))))))
+          (log/error (.toString e) )))))
+  )
 
 (defn register [req]
   (let [body (request-utils/body-string req)]
@@ -40,7 +41,8 @@
           (response-utils/status (response-utils/response (str (.getMessage e))) 400)
           (log/error (.toString e) )
           )
-        ))))
+        )))
+  )
 
 (def get-all-users (->
                      (response-utils/response (json/write-str user-dao/users))
@@ -53,7 +55,8 @@
     (try
       (response-utils/response (json/write-str (user-dao/find-user (get inputs :username ""))))
       (catch Exception e
-        (response-utils/status (response-utils/response (str "Error: " (.toString e))) 400)))))
+        (response-utils/status (response-utils/response (str "Error: " (.toString e))) 400))))
+  )
 
 
 (defn get-users "Gets all users except with id" [req]
@@ -65,7 +68,8 @@
           (response-utils/header "Content-Type" "application/json")
           )
         (catch Exception e (response-utils/status
-                             (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400))))))
+                             (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)))))
+  )
 
 (defn get-friends [req]
   (let [body (request-utils/body-string req)]
@@ -78,7 +82,22 @@
         (catch Exception e
           (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
           (log/error (.toString e) )
-          )))))
+          ))))
+  )
+
+(defn get-followers [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (->
+          (response-utils/response (json/write-str (user-dao/find-followers (get params :userID ""))))
+          (response-utils/header "Content-Type" "application/json")
+          )
+        (catch Exception e
+          (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
+          (log/error (.toString e) )
+          ))))
+  )
 
 (defn get-non-friends [req]
   (let [body (request-utils/body-string req)]
@@ -91,4 +110,37 @@
         (catch Exception e
           (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
           (log/error (.toString e) )
-          )))))
+          ))))
+  )
+
+(defn add-friend [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (->
+          (response-utils/response (json/write-str (user-dao/add-friend (get params :userID "")
+                                                                        (get params :friendID "")))
+                                   )
+          (response-utils/header "Content-Type" "application/json")
+          )
+        (catch Exception e
+          (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
+          (log/error (.toString e))
+          ))))
+  )
+
+(defn remove-friend [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (->
+          (response-utils/response (json/write-str (user-dao/delete-friend (get params :userID "")
+                                                                        (get params :friendID "")))
+                                   )
+          (response-utils/header "Content-Type" "application/json")
+          )
+        (catch Exception e
+          (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
+          (log/error (.toString e))
+          ))))
+  )

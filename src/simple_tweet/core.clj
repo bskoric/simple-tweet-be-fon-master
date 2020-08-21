@@ -27,7 +27,10 @@
            (wrap-params (GET "/user" params (user-api/get-user (:query-params params))))
            (POST "/users" req (user-api/get-users req))
            (POST "/users/friends" req (user-api/get-friends req))
+           (POST "/users/followers" req (user-api/get-followers req))
            (POST "/users/non-friends" req (user-api/get-non-friends req))
+           (POST "/users/add-friend" req (user-api/add-friend req))
+           (DELETE "/users/remove-friend" req (user-api/remove-friend req))
 
            (route/not-found "Error, not found!")
            )

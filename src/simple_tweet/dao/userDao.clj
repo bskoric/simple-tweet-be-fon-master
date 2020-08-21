@@ -1,6 +1,8 @@
 (ns simple-tweet.dao.userDao
   (:require [clojure.java.jdbc :as db]
-            [simple-tweet.db-init :as pool]))
+            [simple-tweet.db-init :as pool]
+            [taoensso.timbre :as log :refer :all]
+            ))
 
 (def users (db/query pool/my-pool
                       ["select * from user"]))
@@ -19,8 +21,14 @@
 
 (defn find-friends [user-id]
   (db/query pool/my-pool
-            ["SELECT friend_id, date, first_name, last_name, username, email
+            ["SELECT friend_id as user_id, date, first_name, last_name, username, email
             FROM friendship f join user u on f.friend_id = u.user_id WHERE f.user_id = ?" user-id]))
+
+(defn find-followers [user-id]
+  (db/query pool/my-pool
+            ["SELECT u.user_id,date, u.first_name, last_name, username, email
+            FROM friendship f join user u on f.user_id = u.user_id
+            WHERE friend_id = ?" user-id]))
 
 (defn find-non-friends [user-id]
   (db/query pool/my-pool
@@ -35,5 +43,18 @@
 
 (defn insert-user [firstname lastname username password email]
   (db/insert! pool/my-pool "user" {:first_name firstname :last_name lastname :username username :password password :email email})
-  (println (format "Inserting user %s %s %s" firstname lastname username))
+  (log/info (format "Inserting user %s %s %s" firstname lastname username))
+  )
+
+(defn add-friend [user_id friend_id]
+  (db/insert! pool/my-pool "friendship" {:user_id user_id :friend_id friend_id})
+  (log/info (format "Adding friend %s for user %s" friend_id user_id))
+  (str "Friend added")
+  )
+
+(defn delete-friend [user_id friend_id]
+  (db/delete!
+    pool/my-pool "friendship" ["user_id = ? and friend_id = ?" user_id friend_id])
+  (log/info (format "Deleting friend %s for user %s" friend_id user_id))
+  (format "Friend removed")
   )
