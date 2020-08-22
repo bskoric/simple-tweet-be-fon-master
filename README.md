@@ -1,22 +1,33 @@
 # simple-tweet
 
-A Clojure library designed to ... well, that part is up to you.
+**Simple tweet** is application created like student project on University of Belgrade, Faculty of Organizational Sciences, 
+for exam Alati i metode softverskog inzenjerstva.
 
-## Usage
+Professor: Dragan Đurić
 
-FIXME
+Student: Branko Skorić 
 
-## License
+## Description
+**Simple tweet** is very simple version of Twitter application, social networking service on which users post and 
+interact with messages known as "tweets". 
 
-Copyright © 2020 FIXME
+Users can see only post from people who are their friends, namely from the people whom they mark as friend (follow).
+User can search for friends, add new friends, remove existing friends.
 
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
+Regarding tweets, user can read friend's tweets, insert his own tweets, change existing ones.
+Each tweet can be liked, by clicking on the heart button on the tweet. Also by clicking second time, tweet can be unliked.
+Each tweet will display number of likes.
 
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+Last but not least, user have to register, login, in order to use application.
+Also, user can change his data and passoword, through appication.
+
+## Architecture
+
+Application using MySQL database.
+
+Simple tweet uses 'headless' architecture, that means that has two side of application, Frontend part and Backend part.
+
+Backend part of application has written in **Clojure**, API calls are created, so many FE client can use those API calls.
+
+Frontpart is impleneted in JavaScript library, **React.js**.
+
