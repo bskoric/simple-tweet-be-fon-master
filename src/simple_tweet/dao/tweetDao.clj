@@ -17,7 +17,7 @@
 (defn find-friends-tweets "Find all friends tweets and my" [user-id]
   (db/query pool/my-pool ["SELECT tweet_id, title, post, date, u.user_id, first_name, last_name, email
   FROM `tweet` t JOIN user u ON t.user = u.user_id
-  WHERE user in (SELECT user_id from friendship where friend_id = ?) or user = ?
+  WHERE user in (SELECT friend_id from friendship where user_id = ?) or user = ?
   ORDER by date DESC" user-id user-id])
   )
 
