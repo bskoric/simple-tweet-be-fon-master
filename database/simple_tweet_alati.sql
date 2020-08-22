@@ -105,8 +105,9 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`user_id`, `first_name`, `last_name`, `username`, `password`, `email`) VALUES
 (1, 'Branko', 'Skoric', 'bskoric', '$2a$11$d9p/kLVugzX5Sr/3SkXbTueIYfbyTVaHKXzHEYmE8mxC/5wsYZz0S', 'skoric.branko@yahoo.com'),
-(2, 'Marko', 'Markovic', 'mmarkovic', '$2y$11$KYFw95v4BrYPcal0WcCqdeGgmUK.r9fsLaL9RR1E35ovb0bBUXYf.', 'mmarkovic@test.com'),
-(3, 'Pera', 'Peric', 'pperic', '$2y$11$FZacf/C8UInACakNxtO2v.6.V0sZ1fZbDTBVi5SCrsI72KOzWPtOm', 'pperic@test.com');
+(2, 'Marko', 'Markovic', 'mmarkovic', '$2a$11$Ck8hPHFOt2htcedZ6hXhI.58T2WEtHazXLTU9RQQOjbrGQl0dZa5G', 'mmarkovic@test.com'),
+(3, 'Pera', 'Peric', 'pperic', '$2a$11$tJ6gOp59xkYgePR01z2.0urTiGUUYzo6tzzPXD/PhWGUeQ8WdSZNW', 'pperic@test.com'),
+(11, 'Test', 'Tester', 'ttester', '$2a$11$T/U0Cn2rBYEk5nSXJ637wuJSnE6.RNpe6DoSjz44pnjn/uTEfcGwK', 'ttester@email.com');
 
 --
 -- Indexes for dumped tables
