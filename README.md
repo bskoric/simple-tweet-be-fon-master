@@ -1,7 +1,7 @@
 # Simple-tweet
 
-**Simple tweet** is application created like student's project on University of Belgrade, Faculty of Organizational Sciences, 
-for exam Alati i metode softverskog inzenjerstva.
+**Simple tweet** is application created like student's project at **University of Belgrade, Faculty of Organizational Sciences**, 
+for exam **Alati i metode softverskog inzenjerstva**.
 
 Professor: Dragan Đurić
 
@@ -28,6 +28,8 @@ Application using MySQL database.
 Simple tweet uses 'headless' architecture, that means that has two side of application, Frontend part and Backend part.
 
 Backend part of application has written in **Clojure**, API calls are created, so many FE client can use those API calls.
+For creating APIs, with Clojure are used compojure, http-kit and ring middleware. Timbre library is used for logging purpose.
+JDBC is used for conneting to database, as well as crypto-password and Base64 for decode and encode passwords.  
 
-Frontpart is impleneted in JavaScript library, **React.js**.
+Frontend part is impleneted in JavaScript library, **React.js**.
 
