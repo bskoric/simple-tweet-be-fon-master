@@ -20,6 +20,7 @@ Each tweet will display number of likes.
 
 Last but not least, user have to register, login, in order to use application.
 Also, user can change his data and passoword, through appication.
+For testing purpose, all existing users using same password '**12345**'
 
 ## Architecture
 
