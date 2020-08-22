@@ -58,3 +58,17 @@
   (log/info (format "Deleting friend %s for user %s" friend_id user_id))
   (format "Friend removed")
   )
+
+(defn update-user [id firstname lastname username email]
+  (db/update!
+    pool/my-pool "user" {:first_name firstname :last_name lastname :username username :email email} ["user_id=?" id])
+  (log/info "Updating user " id)
+  (format "User successfully updated")
+  )
+
+(defn update-password [username password]
+  (db/update!
+    pool/my-pool "user" {:password password} ["username = ?" username])
+  (log/info "Updating password for user " username)
+  (format "Password successfully updated")
+  )

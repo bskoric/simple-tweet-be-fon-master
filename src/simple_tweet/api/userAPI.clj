@@ -21,7 +21,7 @@
           )
         (catch Exception e
           (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
-          (log/error (.toString e) )))))
+          (log/error (.toString e))))))
   )
 
 (defn register [req]
@@ -39,7 +39,7 @@
           )
         (catch Exception e
           (response-utils/status (response-utils/response (str (.getMessage e))) 400)
-          (log/error (.toString e) )
+          (log/error (.toString e))
           )
         )))
   )
@@ -81,7 +81,7 @@
           )
         (catch Exception e
           (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
-          (log/error (.toString e) )
+          (log/error (.toString e))
           ))))
   )
 
@@ -95,7 +95,7 @@
           )
         (catch Exception e
           (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
-          (log/error (.toString e) )
+          (log/error (.toString e))
           ))))
   )
 
@@ -109,7 +109,7 @@
           )
         (catch Exception e
           (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
-          (log/error (.toString e) )
+          (log/error (.toString e))
           ))))
   )
 
@@ -135,12 +135,50 @@
       (try
         (->
           (response-utils/response (json/write-str (user-dao/delete-friend (get params :userID "")
-                                                                        (get params :friendID "")))
+                                                                           (get params :friendID "")))
                                    )
           (response-utils/header "Content-Type" "application/json")
           )
         (catch Exception e
           (response-utils/status (response-utils/response (str "Error, can't find user.\n" (.toString e))) 400)
+          (log/error (.toString e))
+          ))))
+  )
+
+(defn change-password [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (->
+          (response-utils/response (json/write-str (user-service/change-password
+                                                     (get params :username "")
+                                                     (get params :oldPassword "")
+                                                     (get params :newPassword "")))
+                                   )
+          (response-utils/header "Content-Type" "application/json")
+          )
+        (catch Exception e
+          (response-utils/status (response-utils/response (str "Error, can't change password.\n" (.toString e))) 400)
+          (log/error (.toString e))
+          ))))
+  )
+
+(defn update-user [req]
+  (let [body (request-utils/body-string req)]
+    (let [params (json/read-str body :key-fn keyword)]
+      (try
+        (->
+          (response-utils/response (json/write-str (user-dao/update-user (get params :user_id "")
+                                                                         (get params :first_name "")
+                                                                         (get params :last_name "")
+                                                                         (get params :username "")
+                                                                         (get params :email "")
+                                                                         ))
+                                   )
+          (response-utils/header "Content-Type" "application/json")
+          )
+        (catch Exception e
+          (response-utils/status (response-utils/response (str "Error, can't update user.\n" (.toString e))) 400)
           (log/error (.toString e))
           ))))
   )

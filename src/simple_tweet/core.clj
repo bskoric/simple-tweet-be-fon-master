@@ -32,6 +32,8 @@
            (POST "/users/non-friends" req (user-api/get-non-friends req))
            (POST "/users/add-friend" req (user-api/add-friend req))
            (DELETE "/users/remove-friend" req (user-api/remove-friend req))
+           (PUT "/user/update" req (user-api/update-user req))
+           (PUT "/user/password/update" req (user-api/change-password req))
 
            (POST "/like" req (tweets-api/add-like req))
            (POST "/like/check" req (tweets-api/check-like req))
