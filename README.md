@@ -1,6 +1,6 @@
-# simple-tweet
+# Simple-tweet
 
-**Simple tweet** is application created like student project on University of Belgrade, Faculty of Organizational Sciences, 
+**Simple tweet** is application created like student's project on University of Belgrade, Faculty of Organizational Sciences, 
 for exam Alati i metode softverskog inzenjerstva.
 
 Professor: Dragan Đurić
